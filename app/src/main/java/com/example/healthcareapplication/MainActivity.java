@@ -3,6 +3,7 @@ package com.example.healthcareapplication;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
@@ -10,19 +11,20 @@ import androidx.navigation.Navigation;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
+    Toolbar appToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        NavController navController = Navigation.findNavController(this,R.id.fragmentContainerView);
+        NavController navController = Navigation.findNavController(this, R.id.fragmentContainerView);
         bottomNavigationView = findViewById(R.id.bottom_nav);
+        appToolbar = findViewById(R.id.app_toolbar);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -52,14 +54,18 @@ public class MainActivity extends AppCompatActivity {
                     // Hide and disable the bottom navigation view
                     bottomNavigationView.setVisibility(View.GONE);
                     bottomNavigationView.setEnabled(false);
+
+                    // Hide the Toolbar
+                    appToolbar.setVisibility(View.GONE);
                 } else {
                     // Show and enable the bottom navigation view
                     bottomNavigationView.setVisibility(View.VISIBLE);
                     bottomNavigationView.setEnabled(true);
+
+                    // Show the Toolbar
+                    appToolbar.setVisibility(View.VISIBLE);
                 }
             }
         });
-
-
     }
 }

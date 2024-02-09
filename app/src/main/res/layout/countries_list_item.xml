@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="120dp"
+    android:layout_height="120dp"
+    android:layout_margin="8dp">
+
+    <TextView
+        android:id="@+id/textViewFoodCategory"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFCB32"
+        android:gravity="center"
+        android:text="Food Category"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <!-- You can add an ImageView here if needed -->
+
+</RelativeLayout>
