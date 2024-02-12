@@ -1,8 +1,11 @@
 package com.example.healthcareapplication.model.network;
 
+import android.util.Log;
+
 import com.example.healthcareapplication.model.dto.MealAreaList;
 import com.example.healthcareapplication.model.dto.MealCategoryList;
 import com.example.healthcareapplication.model.dto.MealDTO;
+import com.example.healthcareapplication.model.dto.MealDetailDTO;
 import com.example.healthcareapplication.model.dto.MealListDto;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -24,6 +27,8 @@ public class AppRemoteDataSourseImp {
     private ArrayList<MealAreaList.MealArea> areas = new ArrayList<>();
 
     private ArrayList<MealListDto.MealListItemDto> Meal = new ArrayList<>();
+
+    private ArrayList<MealDetailDTO.MealItem> mealDetails = new ArrayList<>();
 
     private AppRemoteDataSourseImp() {
     }
@@ -133,7 +138,8 @@ public void getMealsByCategory(String category, NetWorkCallback callback) {
             public void onResponse(Call<MealListDto> call, Response<MealListDto> response) {
                 if (response.isSuccessful()) {
                     Meal.addAll(response.body().getMeals());
-                    callback.onGetMealsByCategorySuccess(Meal);
+                    Log.i("meal from area", "onResponse: "+response.body().getMeals());
+                    callback.onGetMealsByAreaSuccess(Meal);
                 } else {
                     callback.onGetMealsByCategoryError("Unsuccessful response");
                 }
@@ -146,4 +152,64 @@ public void getMealsByCategory(String category, NetWorkCallback callback) {
         });
 
 }
+
+    public void getMealsByArea(String area, NetWorkCallback callback) {
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        Network network = retrofit.create(Network.class);
+        network.getMealsByArea(area).enqueue(new Callback<MealListDto>() {
+
+            @Override
+            public void onResponse(Call<MealListDto> call, Response<MealListDto> response) {
+                if (response.isSuccessful()) {
+                    Meal.addAll(response.body().getMeals());
+                    callback.onGetMealsByAreaSuccess(Meal);
+                } else {
+                    callback.onGetMealsByCategoryError("Unsuccessful response");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MealListDto> call, Throwable t) {
+                callback.onGetMealsByAreaError(t.getMessage());
+            }
+        });
+
+    }
+
+    public void getMealDetails(String id, NetWorkCallback callback) {
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        Network network = retrofit.create(Network.class);
+        network.getMealById(id).enqueue(new Callback<MealDetailDTO>() {
+
+            @Override
+            public void onResponse(Call<MealDetailDTO> call, Response<MealDetailDTO> response) {
+                if (response.isSuccessful()) {
+                    mealDetails.addAll(response.body().getMeals());
+                    callback.onGetMealByIdSuccess(mealDetails);
+                } else {
+                    callback.onGetMealByIdError("Unsuccessful response");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MealDetailDTO> call, Throwable t) {
+                callback.onGetMealByIdError(t.getMessage());
+            }
+
+        });
+
+    }
+
 }

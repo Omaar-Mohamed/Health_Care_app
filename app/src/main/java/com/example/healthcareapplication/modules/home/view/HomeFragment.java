@@ -86,6 +86,7 @@ public class HomeFragment extends Fragment implements HomeIview {
 //                HomeFragmentDirections.ActionHomeFragmentToCategoryFragment action = HomeFragmentDirections.actionHomeFragmentToCategoryFragment(mealCategory);
                 Bundle bundle = new Bundle();
                 bundle.putString("category", mealCategory.getStrCategory());
+                bundle.putString("type", "c");
                 NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_HomeFragment_to_mealsFragment, bundle);
 
             }
@@ -130,6 +131,12 @@ public class HomeFragment extends Fragment implements HomeIview {
             @Override
             public void onAreaClick(MealAreaList.MealArea mealCategory) {
                 Toast.makeText(getContext(), mealCategory.getArea(), Toast.LENGTH_SHORT).show();
+                Bundle bundle = new Bundle();
+                bundle.putString("area", mealCategory.getArea());
+                Log.i("getArea", "onAreaClick: "+mealCategory.getArea());
+
+                NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_HomeFragment_to_mealsFragment, bundle);
+
             }
         });
         countriesRecyclerView.setAdapter(countriesAdapter);

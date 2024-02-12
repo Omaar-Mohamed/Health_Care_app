@@ -4,6 +4,7 @@ import com.example.healthcareapplication.model.AppRepo;
 import com.example.healthcareapplication.model.dto.MealAreaList;
 import com.example.healthcareapplication.model.dto.MealCategoryList;
 import com.example.healthcareapplication.model.dto.MealDTO;
+import com.example.healthcareapplication.model.dto.MealDetailDTO;
 import com.example.healthcareapplication.model.dto.MealListDto;
 import com.example.healthcareapplication.model.network.NetWorkCallback;
 import com.example.healthcareapplication.modules.home.view.HomeIview;
@@ -60,6 +61,26 @@ public class HomePresenter implements NetWorkCallback {
 
     @Override
     public void onGetMealsByCategoryError(String error) {
+
+    }
+
+    @Override
+    public void onGetMealsByAreaSuccess(List<MealListDto.MealListItemDto> meals) {
+
+    }
+
+    @Override
+    public void onGetMealsByAreaError(String error) {
+
+    }
+
+    @Override
+    public void onGetMealByIdSuccess(List<MealDetailDTO.MealItem> meals) {
+
+    }
+
+    @Override
+    public void onGetMealByIdError(String error) {
 
     }
 

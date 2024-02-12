@@ -18,4 +18,6 @@ public interface HomeIview {
     void showAreas(List<MealAreaList.MealArea> areas);
 
     void showAreasError(String error);
+
+
 }

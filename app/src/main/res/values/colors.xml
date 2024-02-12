@@ -7,5 +7,6 @@
     <color name="buttonAppBarTheme">#80972d</color>
     <color name="notification_template_icon_low_bg">#0cffffff</color>
     <color name="appbarTextColor">#61770e</color>
+    <color name="red">#FF0000</color>
 
 </resources>

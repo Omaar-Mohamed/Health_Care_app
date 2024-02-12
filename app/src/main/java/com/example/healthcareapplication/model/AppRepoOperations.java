@@ -10,5 +10,11 @@ public interface AppRepoOperations {
 
     void getMealsByCategory(String category, NetWorkCallback callback);
 
+    void getMealsByArea(String area, NetWorkCallback callback);
+
+    void getMealById(String id, NetWorkCallback callback);
+
+
+
 
 }

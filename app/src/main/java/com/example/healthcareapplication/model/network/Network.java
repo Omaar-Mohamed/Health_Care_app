@@ -3,6 +3,7 @@ package com.example.healthcareapplication.model.network;
 import com.example.healthcareapplication.model.dto.MealAreaList;
 import com.example.healthcareapplication.model.dto.MealCategoryList;
 import com.example.healthcareapplication.model.dto.MealDTO;
+import com.example.healthcareapplication.model.dto.MealDetailDTO;
 import com.example.healthcareapplication.model.dto.MealListDto;
 
 import retrofit2.Call;
@@ -22,5 +23,11 @@ public interface Network {
 
     @GET("filter.php")
     Call<MealListDto> getMealsByCategory(@Query("c") String category);
+
+    @GET("filter.php")
+    Call<MealListDto> getMealsByArea(@Query("a") String area);
+
+    @GET("lookup.php")
+    Call<MealDetailDTO> getMealById(@Query("i") String id);
 
 }
