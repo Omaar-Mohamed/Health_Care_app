@@ -3,6 +3,7 @@ package com.example.healthcareapplication.model.network;
 import com.example.healthcareapplication.model.dto.MealAreaList;
 import com.example.healthcareapplication.model.dto.MealCategoryList;
 import com.example.healthcareapplication.model.dto.MealDTO;
+import com.example.healthcareapplication.model.dto.MealListDto;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -18,9 +19,11 @@ public class AppRemoteDataSourseImp {
     public static final String BASE_URL = "https://www.themealdb.com/api/json/v1/1/";
     private static AppRemoteDataSourseImp INSTANCE;
     private ArrayList<MealCategoryList.MealCategory> categories = new ArrayList<>();
-    private ArrayList<MealDTO.Meal> Meal = new ArrayList<>();
+    private ArrayList<MealDTO.Meal> randomMeal = new ArrayList<>();
 
     private ArrayList<MealAreaList.MealArea> areas = new ArrayList<>();
+
+    private ArrayList<MealListDto.MealListItemDto> Meal = new ArrayList<>();
 
     private AppRemoteDataSourseImp() {
     }
@@ -73,8 +76,8 @@ public class AppRemoteDataSourseImp {
             @Override
             public void onResponse(Call<MealDTO> call, Response<MealDTO> response) {
                 if (response.isSuccessful()) {
-                    Meal.addAll(response.body().getMeals());
-                    callback.onGetRandomMealSuccess(Meal);
+                    randomMeal.addAll(response.body().getMeals());
+                    callback.onGetRandomMealSuccess(randomMeal);
                 } else {
                     callback.onGetRandomMealError("Unsuccessful response");
                 }
@@ -114,4 +117,33 @@ public class AppRemoteDataSourseImp {
             }
         });
     }
+
+public void getMealsByCategory(String category, NetWorkCallback callback) {
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        Network network = retrofit.create(Network.class);
+        network.getMealsByCategory(category).enqueue(new Callback<MealListDto>() {
+
+            @Override
+            public void onResponse(Call<MealListDto> call, Response<MealListDto> response) {
+                if (response.isSuccessful()) {
+                    Meal.addAll(response.body().getMeals());
+                    callback.onGetMealsByCategorySuccess(Meal);
+                } else {
+                    callback.onGetMealsByCategoryError("Unsuccessful response");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MealListDto> call, Throwable t) {
+                callback.onGetMealsByCategoryError(t.getMessage());
+            }
+        });
+
+}
 }

@@ -7,4 +7,8 @@ public interface AppRepoOperations {
 
     void getRandomMeal(NetWorkCallback callback);
     void getAreas(NetWorkCallback callback);
+
+    void getMealsByCategory(String category, NetWorkCallback callback);
+
+
 }

@@ -3,6 +3,8 @@ package com.example.healthcareapplication.modules.home.view;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.healthcareapplication.R;
@@ -80,6 +83,10 @@ public class HomeFragment extends Fragment implements HomeIview {
 
             @Override
             public void onCategoryClick(MealCategoryList.MealCategory mealCategory) {
+//                HomeFragmentDirections.ActionHomeFragmentToCategoryFragment action = HomeFragmentDirections.actionHomeFragmentToCategoryFragment(mealCategory);
+                Bundle bundle = new Bundle();
+                bundle.putString("category", mealCategory.getStrCategory());
+                NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_HomeFragment_to_mealsFragment, bundle);
 
             }
 
@@ -122,7 +129,7 @@ public class HomeFragment extends Fragment implements HomeIview {
 
             @Override
             public void onAreaClick(MealAreaList.MealArea mealCategory) {
-
+                Toast.makeText(getContext(), mealCategory.getArea(), Toast.LENGTH_SHORT).show();
             }
         });
         countriesRecyclerView.setAdapter(countriesAdapter);

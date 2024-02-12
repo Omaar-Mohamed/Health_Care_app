@@ -31,11 +31,28 @@
         android:id="@+id/HomeFragment"
         android:name="com.example.healthcareapplication.modules.home.view.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_HomeFragment_to_mealsFragment"
+            app:destination="@id/mealsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/FavouriteFragment"
         android:name="com.example.healthcareapplication.modules.Favourite.view.FavouriteFragment"
         android:label="fragment_favourite"
         tools:layout="@layout/fragment_favourite" />
+    <fragment
+        android:id="@+id/mealsFragment"
+        android:name="com.example.healthcareapplication.modules.meals.view.MealsFragment"
+        android:label="fragment_meals"
+        tools:layout="@layout/fragment_meals" >
+        <argument
+            android:name="mealsType"
+            app:argType="string"
+            android:defaultValue="Breakfast" />
+        <action
+            android:id="@+id/action_mealsFragment_to_HomeFragment"
+            app:destination="@id/HomeFragment" />
+    </fragment>
 
 </navigation>

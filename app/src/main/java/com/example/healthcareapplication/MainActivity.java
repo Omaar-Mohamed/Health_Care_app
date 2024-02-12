@@ -50,14 +50,33 @@ public class MainActivity extends AppCompatActivity {
         navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
             @Override
             public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
-                if (destination.getId() == R.id.login || destination.getId() == R.id.signupFragment) {
+                if (destination.getId() == R.id.login || destination.getId() == R.id.signupFragment ) {
                     // Hide and disable the bottom navigation view
                     bottomNavigationView.setVisibility(View.GONE);
                     bottomNavigationView.setEnabled(false);
 
                     // Hide the Toolbar
                     appToolbar.setVisibility(View.GONE);
-                } else {
+                }else if (destination.getId() == R.id.mealsFragment) {
+                    // Show and enable the bottom navigation view
+                    bottomNavigationView.setVisibility(View.GONE);
+                    bottomNavigationView.setEnabled(false);
+
+                    // Show the Toolbar
+                    appToolbar.setVisibility(View.VISIBLE);
+                    appToolbar.setTitle("Meals");
+                    appToolbar.setNavigationIcon(android.R.drawable.ic_menu_revert);
+                    appToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            navController.popBackStack();
+                            appToolbar.setNavigationIcon(null);
+                            appToolbar.setTitle("Hello, Jena!");
+                        }
+                    });
+                }
+
+                else {
                     // Show and enable the bottom navigation view
                     bottomNavigationView.setVisibility(View.VISIBLE);
                     bottomNavigationView.setEnabled(true);

@@ -3,6 +3,7 @@ package com.example.healthcareapplication.model.network;
 import com.example.healthcareapplication.model.dto.MealAreaList;
 import com.example.healthcareapplication.model.dto.MealCategoryList;
 import com.example.healthcareapplication.model.dto.MealDTO;
+import com.example.healthcareapplication.model.dto.MealListDto;
 
 import java.util.List;
 
@@ -17,4 +18,8 @@ public interface NetWorkCallback {
     void onGetAreasSuccess(List<MealAreaList.MealArea> areas);
 
     void onGetAreasError(String error);
+
+    void onGetMealsByCategorySuccess(List<MealListDto.MealListItemDto> meals);
+
+    void onGetMealsByCategoryError(String error);
 }

@@ -33,4 +33,11 @@ public class AppRepo implements AppRepoOperations{
     public void getAreas(NetWorkCallback callback) {
         appRemoteDataSourseImp.getAreas(callback);
     }
+
+    @Override
+    public void getMealsByCategory(String category, NetWorkCallback callback) {
+        appRemoteDataSourseImp.getMealsByCategory(category, callback);
+    }
+
+
 }
