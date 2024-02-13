@@ -2,17 +2,19 @@ package com.example.healthcareapplication.model;
 
 import com.example.healthcareapplication.model.network.NetWorkCallback;
 
+import io.reactivex.rxjava3.core.Observable;
+
 public interface AppRepoOperations {
-    void getCategories(NetWorkCallback callback);
+    Observable getCategories();
 
-    void getRandomMeal(NetWorkCallback callback);
-    void getAreas(NetWorkCallback callback);
+    Observable getRandomMeal();
+    Observable getAreas();
 
-    void getMealsByCategory(String category, NetWorkCallback callback);
+    Observable getMealsByCategory(String category);
 
-    void getMealsByArea(String area, NetWorkCallback callback);
+    Observable getMealsByArea(String area);
 
-    void getMealById(String id, NetWorkCallback callback);
+    Observable getMealById(String id);
 
 
 

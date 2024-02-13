@@ -6,12 +6,17 @@ import com.example.healthcareapplication.model.dto.MealCategoryList;
 import com.example.healthcareapplication.model.dto.MealDTO;
 import com.example.healthcareapplication.model.dto.MealDetailDTO;
 import com.example.healthcareapplication.model.dto.MealListDto;
-import com.example.healthcareapplication.model.network.NetWorkCallback;
 import com.example.healthcareapplication.modules.meals.view.MealsIview;
 
 import java.util.List;
 
-public class MealsPresenter implements NetWorkCallback {
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.Observer;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
+public class MealsPresenter  {
 
     private MealsIview mealsIview;
     private AppRepo appRepo;
@@ -23,71 +28,91 @@ public class MealsPresenter implements NetWorkCallback {
 
 
 
-    @Override
-    public void onGetCategoriesSuccess(List<MealCategoryList.MealCategory> categories) {
 
-    }
 
-    @Override
-    public void onGetCategoriesError(String error) {
 
-    }
-
-    @Override
-    public void onGetRandomMealSuccess(List<MealDTO.Meal> meal) {
-
-    }
-
-    @Override
-    public void onGetRandomMealError(String error) {
-
-    }
-
-    @Override
-    public void onGetAreasSuccess(List<MealAreaList.MealArea> areas) {
-
-    }
-
-    @Override
-    public void onGetAreasError(String error) {
-
-    }
-
-    @Override
-    public void onGetMealsByCategorySuccess(List<MealListDto.MealListItemDto> meals) {
-        mealsIview.showMeals(meals);
-    }
     public void getMealsByCategory(String type ,String category) {
-        appRepo.getMealsByCategory( category, this);
-    }
-    @Override
-    public void onGetMealsByCategoryError(String error) {
+        appRepo.getMealsByCategory( category)
+                .observeOn(AndroidSchedulers.mainThread()).
+                subscribe(new Observer <MealListDto>() {
+
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                    }
+
+                    @Override
+                    public void onNext(@NonNull MealListDto mealListDto) {
+                        mealsIview.showMeals(mealListDto.getMeals());
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+//                        mealsIview.showError(e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+                    }
+                });
 
     }
 
-    @Override
-    public void onGetMealsByAreaSuccess(List<MealListDto.MealListItemDto> meals) {
-        mealsIview.showMeals(meals);
-    }
+
+
     public void getMealsByArea(String type ,String area) {
-        appRepo.getMealsByArea( area, this);
+        appRepo.getMealsByArea( area)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<MealListDto>() {
+
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(@NonNull MealListDto mealListDto) {
+                        mealsIview.showMeals(mealListDto.getMeals());
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 
-    @Override
-    public void onGetMealsByAreaError(String error) {
 
-    }
-
-    @Override
-    public void onGetMealByIdSuccess(List<MealDetailDTO.MealItem> meals) {
-        mealsIview.showMealDetail(meals);
-    }
     public void getMealById(String id) {
-        appRepo.getMealById( id, this);
+        appRepo.getMealById( id)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<MealDetailDTO>() {
+
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(@NonNull MealDetailDTO mealDetailDTO) {
+                        mealsIview.showMealDetail(mealDetailDTO.getMeals());
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 
-    @Override
-    public void onGetMealByIdError(String error) {
 
-    }
 }

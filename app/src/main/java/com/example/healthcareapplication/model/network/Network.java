@@ -6,6 +6,7 @@ import com.example.healthcareapplication.model.dto.MealDTO;
 import com.example.healthcareapplication.model.dto.MealDetailDTO;
 import com.example.healthcareapplication.model.dto.MealListDto;
 
+import io.reactivex.rxjava3.core.Observable;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -13,21 +14,21 @@ import retrofit2.http.Query;
 public interface Network {
 
     @GET("list.php?c=list")
-    Call<MealCategoryList> getCategories();
+    Observable<MealCategoryList> getCategories();
 
     @GET("random.php")
-    Call<MealDTO> getRandomMeal();
+    Observable<MealDTO> getRandomMeal();
 
     @GET("list.php?a=list")
-    Call<MealAreaList> getAreas();
+    Observable<MealAreaList> getAreas();
 
     @GET("filter.php")
-    Call<MealListDto> getMealsByCategory(@Query("c") String category);
+    Observable<MealListDto> getMealsByCategory(@Query("c") String category);
 
     @GET("filter.php")
-    Call<MealListDto> getMealsByArea(@Query("a") String area);
+    Observable<MealListDto> getMealsByArea(@Query("a") String area);
 
     @GET("lookup.php")
-    Call<MealDetailDTO> getMealById(@Query("i") String id);
+    Observable<MealDetailDTO> getMealById(@Query("i") String id);
 
 }

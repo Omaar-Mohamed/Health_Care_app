@@ -1,7 +1,8 @@
 package com.example.healthcareapplication.model;
 
 import com.example.healthcareapplication.model.network.AppRemoteDataSourseImp;
-import com.example.healthcareapplication.model.network.NetWorkCallback;
+
+import io.reactivex.rxjava3.core.Observable;
 
 public class AppRepo implements AppRepoOperations{
     AppRemoteDataSourseImp appRemoteDataSourseImp;
@@ -19,34 +20,34 @@ public class AppRepo implements AppRepoOperations{
     }
 
     @Override
-    public void getCategories(NetWorkCallback callback) {
-        appRemoteDataSourseImp.getCategories(callback);
+    public Observable getCategories() {
+        return appRemoteDataSourseImp.getCategories();
 
     }
 
     @Override
-    public void getRandomMeal(NetWorkCallback callback) {
-        appRemoteDataSourseImp.getRandomMeal(callback);
+    public Observable getRandomMeal() {
+       return appRemoteDataSourseImp.getRandomMeal();
     }
 
     @Override
-    public void getAreas(NetWorkCallback callback) {
-        appRemoteDataSourseImp.getAreas(callback);
+    public Observable getAreas() {
+       return appRemoteDataSourseImp.getAreas();
     }
 
     @Override
-    public void getMealsByCategory(String category, NetWorkCallback callback) {
-        appRemoteDataSourseImp.getMealsByCategory( category, callback);
+    public Observable getMealsByCategory(String category ) {
+        return appRemoteDataSourseImp.getMealsByCategory( category);
     }
 
     @Override
-    public void getMealsByArea(String area, NetWorkCallback callback) {
-        appRemoteDataSourseImp.getMealsByArea(area, callback);
+    public Observable getMealsByArea(String area ) {
+        return appRemoteDataSourseImp.getMealsByArea(area);
     }
 
     @Override
-    public void getMealById(String id, NetWorkCallback callback) {
-        appRemoteDataSourseImp.getMealDetails(id, callback);
+    public Observable getMealById(String id) {
+       return appRemoteDataSourseImp.getMealDetails(id);
     }
 
 

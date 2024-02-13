@@ -1,94 +1,115 @@
 package com.example.healthcareapplication.modules.home.presenter;
 
+import androidx.annotation.NonNull;
+
 import com.example.healthcareapplication.model.AppRepo;
 import com.example.healthcareapplication.model.dto.MealAreaList;
 import com.example.healthcareapplication.model.dto.MealCategoryList;
 import com.example.healthcareapplication.model.dto.MealDTO;
 import com.example.healthcareapplication.model.dto.MealDetailDTO;
 import com.example.healthcareapplication.model.dto.MealListDto;
-import com.example.healthcareapplication.model.network.NetWorkCallback;
+
 import com.example.healthcareapplication.modules.home.view.HomeIview;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class HomePresenter implements NetWorkCallback {
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observer;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
+public class HomePresenter  {
     private AppRepo appRepo;
     private HomeIview homeIview;
+    ArrayList<MealCategoryList.MealCategory> mealCategories = new ArrayList<>();
+    private ArrayList<MealDTO.Meal> randomMeal = new ArrayList<>();
 
     public HomePresenter(HomeIview homeIview, AppRepo appRepo) {
         this.homeIview = homeIview;
         this.appRepo = appRepo;
     }
     public void getCategories() {
-        appRepo.getCategories(this);
-    }
-    @Override
-    public void onGetCategoriesSuccess(List<MealCategoryList.MealCategory> categories) {
-        homeIview.showCategories(categories);
+        appRepo.getCategories()
+                .observeOn(AndroidSchedulers.mainThread()).
+                subscribe(new Observer<MealCategoryList>() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
 
-    }
+            }
 
-    @Override
-    public void onGetCategoriesError(String error) {
-        homeIview.showError(error);
+                    @Override
+                    public void onNext(@io.reactivex.rxjava3.annotations.NonNull MealCategoryList mealCategoryList) {
+                        mealCategories.addAll(mealCategoryList.getMeals());
+                        homeIview.showCategories(mealCategories);
+                    }
 
-    }
 
-    @Override
-    public void onGetRandomMealSuccess(List<MealDTO.Meal> meal) {
-        homeIview.showRandomMeal(meal);
-    }
 
-    @Override
-    public void onGetRandomMealError(String error) {
-        homeIview.showRandomMealError(error);
-    }
 
-    @Override
-    public void onGetAreasSuccess(List<MealAreaList.MealArea> areas) {
-        homeIview.showAreas(areas);
-    }
 
-    @Override
-    public void onGetAreasError(String error) {
+            @Override
+            public void onError(@NonNull Throwable e) {
+                homeIview.showError(e.getMessage());
+            }
 
+            @Override
+            public void onComplete() {
+
+            }
+        });
     }
 
-    @Override
-    public void onGetMealsByCategorySuccess(List<MealListDto.MealListItemDto> meals) {
-
-    }
-
-    @Override
-    public void onGetMealsByCategoryError(String error) {
-
-    }
-
-    @Override
-    public void onGetMealsByAreaSuccess(List<MealListDto.MealListItemDto> meals) {
-
-    }
-
-    @Override
-    public void onGetMealsByAreaError(String error) {
-
-    }
-
-    @Override
-    public void onGetMealByIdSuccess(List<MealDetailDTO.MealItem> meals) {
-
-    }
-
-    @Override
-    public void onGetMealByIdError(String error) {
-
-    }
 
     public void getRandomMeal() {
-        appRepo.getRandomMeal(this);
+        appRepo.getRandomMeal().observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<MealDTO>() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(@io.reactivex.rxjava3.annotations.NonNull MealDTO mealDTO) {
+                randomMeal.addAll(mealDTO.getMeals());
+                homeIview.showRandomMeal(randomMeal);
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+                homeIview.showRandomMealError(e.getMessage());
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
 
     }
     public void getAreas() {
-        appRepo.getAreas(this);
+        appRepo.getAreas()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<MealAreaList>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(@io.reactivex.rxjava3.annotations.NonNull MealAreaList mealAreaList) {
+                        homeIview.showAreas(mealAreaList.getMealAreas());
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        homeIview.showError(e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 }
