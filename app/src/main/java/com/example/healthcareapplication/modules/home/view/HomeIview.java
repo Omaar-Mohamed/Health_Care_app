@@ -19,5 +19,7 @@ public interface HomeIview {
 
     void showAreasError(String error);
 
+    void onRandomMealClick(MealDTO.Meal meal);
+
 
 }
