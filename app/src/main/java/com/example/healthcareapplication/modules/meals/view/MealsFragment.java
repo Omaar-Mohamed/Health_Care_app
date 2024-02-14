@@ -30,9 +30,11 @@ import com.example.healthcareapplication.model.dto.MealDetailDTO;
 import com.example.healthcareapplication.model.dto.MealListDto;
 import com.example.healthcareapplication.model.network.AppRemoteDataSourseImp;
 import com.example.healthcareapplication.modules.meals.presenter.MealsPresenter;
+import com.example.healthcareapplication.shared.IngrediantAdapter;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -114,6 +116,29 @@ TextView message;
 
     private void showMealDetailsPopup(MealDetailDTO.MealItem meal) {
 
+        ArrayList <String>
+        ingredientsList=new ArrayList<String>();
+        ingredientsList.add(meal.getStrMeasure1());
+        ingredientsList.add(meal.getStrIngredient2());
+        ingredientsList.add(meal.getStrIngredient3());
+        ingredientsList.add(meal.getStrIngredient4());
+        ingredientsList.add(meal.getStrIngredient5());
+        ingredientsList.add(meal.getStrIngredient6());
+        ingredientsList.add(meal.getStrIngredient7());
+        ingredientsList.add(meal.getStrIngredient8());
+        ingredientsList.add(meal.getStrIngredient9());
+        ingredientsList.add(meal.getStrIngredient10());
+        ingredientsList.add(meal.getStrIngredient11());
+        ingredientsList.add(meal.getStrIngredient12());
+        ingredientsList.add(meal.getStrIngredient13());
+        ingredientsList.add(meal.getStrIngredient14());
+        ingredientsList.add(meal.getStrIngredient15());
+        ingredientsList.add(meal.getStrIngredient16());
+        ingredientsList.add(meal.getStrIngredient17());
+        ingredientsList.add(meal.getStrIngredient18());
+        ingredientsList.add(meal.getStrIngredient19());
+        ingredientsList.add(meal.getStrIngredient20());
+        ingredientsList.removeIf(ing -> ing.equals(""));
 
         View popupView = getLayoutInflater().inflate(R.layout.popup_meal_details, null);
 
@@ -123,6 +148,15 @@ TextView message;
         TextView textViewMealDescription = popupView.findViewById(R.id.textViewMealDescription);
         ImageButton imageButtonFavorite = popupView.findViewById(R.id.imageButtonFavorite);
         WebView webView = popupView.findViewById(R.id.webView);
+
+        // Set up the RecyclerView for the ingredients
+        RecyclerView recyclerView1 = popupView.findViewById(R.id.recyclerViewIngredients);
+        recyclerView1.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        recyclerView1.setLayoutManager(linearLayoutManager);
+        recyclerView1.setAdapter(new IngrediantAdapter(ingredientsList, getContext()));
+        recyclerView1.getAdapter().notifyDataSetChanged();
 
         // Set meal details
         ImageView imageViewMeal = popupView.findViewById(R.id.imageViewMeal);
@@ -207,5 +241,7 @@ TextView message;
                 "    iframe.style.width = '100%';" +
                 "}})();", null);
     }
+
+
 
 }
