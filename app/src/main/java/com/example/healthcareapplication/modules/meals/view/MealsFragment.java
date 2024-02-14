@@ -13,6 +13,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -32,6 +34,8 @@ import com.example.healthcareapplication.modules.meals.presenter.MealsPresenter;
 import org.w3c.dom.Text;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class MealsFragment extends Fragment implements MealsIview {
@@ -118,7 +122,7 @@ TextView message;
         TextView textViewMealArea = popupView.findViewById(R.id.textViewMealArea);
         TextView textViewMealDescription = popupView.findViewById(R.id.textViewMealDescription);
         ImageButton imageButtonFavorite = popupView.findViewById(R.id.imageButtonFavorite);
-        VideoView videoView = popupView.findViewById(R.id.videoView);
+        WebView webView = popupView.findViewById(R.id.webView);
 
         // Set meal details
         ImageView imageViewMeal = popupView.findViewById(R.id.imageViewMeal);
@@ -160,8 +164,48 @@ TextView message;
                 imageButtonFavorite.setTag(newImageResource); // Upda
             }
         });
+
+        Log.d("TAG", "setMealVideo: width " +webView.getX());
+        String videoUrl = convertToEmbeddedUrl(meal.getStrYoutube()); // Replace VIDEO_ID with the actual video ID or embed URL
+        String video="<iframe width='400' height=\"200\" src= '"+videoUrl+"' title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen></iframe>";
+        webView.getSettings().setJavaScriptEnabled(true); // Enable JavaScript (required for video playback)
+        webView.setWebViewClient(new WebViewClient(){
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                adjustIframeWidth(view);
+            }
+        });
+        webView.loadData(video, " text/html", "utf-8"); // Load the HTML content into the WebView
+//        webView.loadUrl(url);
+
     }
 
+    public static String convertToEmbeddedUrl(String youtubeUrl) {
+        String videoId = extractVideoId(youtubeUrl);
+        return "https://www.youtube.com/embed/" + videoId;
+    }
 
+    private static String extractVideoId(String youtubeUrl) {
+        String videoId = null;
+        String regex = "(?<=watch\\?v=|/videos/|embed\\/|youtu.be\\/|\\/v\\/|\\/e\\/|watch\\?v%3D|watch\\?feature=player_embedded&v=|%2Fvideos%2F|embed%2Fvideos%2F|youtu.be%2F|%2Fv%2F)[^#\\&\\?\\n]*";
+
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(youtubeUrl);
+        if (matcher.find()) {
+            videoId = matcher.group();
+        }
+
+        return videoId;
+    }
+
+    private void adjustIframeWidth(WebView webView) {
+        webView.evaluateJavascript("javascript:(function() { " +
+                "var iframes = document.getElementsByTagName('iframe');" +
+                "for (var i = 0; i < iframes.length; i++) {" +
+                "    var iframe = iframes[i];" +
+                "    iframe.style.width = '100%';" +
+                "}})();", null);
+    }
 
 }

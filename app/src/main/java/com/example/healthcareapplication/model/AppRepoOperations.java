@@ -1,6 +1,5 @@
 package com.example.healthcareapplication.model;
 
-import com.example.healthcareapplication.model.network.NetWorkCallback;
 
 import io.reactivex.rxjava3.core.Observable;
 
