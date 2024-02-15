@@ -33,6 +33,8 @@ import com.example.healthcareapplication.model.dto.MealDetailDTO;
 import com.example.healthcareapplication.model.network.AppRemoteDataSourseImp;
 import com.example.healthcareapplication.modules.home.presenter.HomePresenter;
 import com.example.healthcareapplication.shared.IngrediantAdapter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +43,9 @@ import java.util.regex.Pattern;
 
 
 public class HomeFragment extends Fragment implements HomeIview {
+
+    FirebaseAuth auth;
+    FirebaseUser user;
     HomePresenter homePresenter;
     RecyclerView categoriesRecyclerView;
 
@@ -67,6 +72,12 @@ public class HomeFragment extends Fragment implements HomeIview {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        auth = FirebaseAuth.getInstance();
+        user = auth.getCurrentUser();
+//        if (user != null) {
+//           Navigation.findNavController(view).navigate(R.id.action_HomeFragment_to_login);
+//        }
         categoriesRecyclerView = view.findViewById(R.id.categoriesRV);
         randomMealName = view.findViewById(R.id.textViewMealName);
         randomMealImage = view.findViewById(R.id.imageViewMeal);

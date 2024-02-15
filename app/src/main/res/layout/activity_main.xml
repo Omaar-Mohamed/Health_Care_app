@@ -11,14 +11,13 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/mainTheme"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:title="Hello, Jana"
         app:titleTextColor="@color/appbarTextColor"
-        />
-
+        app:menu="@menu/home_toolbar_menu"
+    />
     <fragment
         android:id="@+id/fragmentContainerView"
         android:name="androidx.navigation.fragment.NavHostFragment"

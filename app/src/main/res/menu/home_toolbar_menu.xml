@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- Define your menu items with icons -->
+    <item
+        android:id="@+id/menu_search"
+        android:title="Item 1"
+        app:showAsAction="always"
+        android:icon="@android:drawable/ic_menu_search" />
+
+    <item
+        android:id="@+id/menu_logout"
+        android:title="Item 2"
+        app:showAsAction="always"
+        android:icon="@android:drawable/ic_input_delete" />
+
+</menu>

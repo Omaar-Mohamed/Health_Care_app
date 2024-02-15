@@ -85,7 +85,13 @@
                 />
 
             </LinearLayout>
-
+            <ImageView
+                android:id="@+id/imageViewGoogle"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/common_google_signin_btn_icon_dark_normal"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
