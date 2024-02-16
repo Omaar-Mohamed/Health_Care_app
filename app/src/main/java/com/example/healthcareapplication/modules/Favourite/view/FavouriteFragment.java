@@ -21,6 +21,7 @@ import com.example.healthcareapplication.modules.Favourite.presenter.FavMealsPre
 import com.example.healthcareapplication.modules.login.view.Login;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -80,10 +81,16 @@ RecyclerView recyclerView;
 
     @Override
     public void showFavMeals(Flowable<List<MealDetailDTO.MealItem>> meals) {
+        String currentUserEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+
         meals.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(mealItems -> {
-                    FavouriteAdapter favouriteAdapter = new FavouriteAdapter(getContext(), meals, new OnFavMealClickListener() {
+                .filter(mealItems -> {
+                    // Filter the meal items based on the user's email
+                   return mealItems.removeIf(mealItem -> !mealItem.getEmail().equals(currentUserEmail));
+                })
+                .subscribe(filteredMeals -> {
+                    FavouriteAdapter favouriteAdapter = new FavouriteAdapter(getContext(), Flowable.just(filteredMeals), new OnFavMealClickListener() {
                         @Override
                         public void onFavMealClick(MealDetailDTO.MealItem mealItem) {
 
@@ -94,14 +101,13 @@ RecyclerView recyclerView;
                             favMealsPresenter.removeFavMeal(mealItem);
                         }
                     });
-                    // Do something with the meal items
-                    Log.i("showFavMeals", "showFavMeals: "+mealItems.size() + FirebaseAuth.getInstance().getCurrentUser().getEmail());
+
+                    // Do something with the filtered meal items
+                    Log.i("showFavMeals", "showFavMeals: " + filteredMeals.size() + " " + currentUserEmail);
 
                     recyclerView.setAdapter(favouriteAdapter);
                     favouriteAdapter.notifyDataSetChanged();
-                }
-
-                );
+                });
     }
 
     @Override

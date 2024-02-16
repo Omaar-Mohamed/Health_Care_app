@@ -18,7 +18,7 @@ public class FavMealsDataSource implements DataBaseOperation{
     private FavMealsDataSource(Context context , String email) {
         AppDatabase appDatabase = AppDatabase.getInstance(context.getApplicationContext());
         fAvMealsDAO = appDatabase.FAvMealsDAO();
-        favMeals = fAvMealsDAO.getFavMeals(email);
+        favMeals = fAvMealsDAO.getFavMeals();
     }
 
     public static FavMealsDataSource getInstance(Context context , String email) {

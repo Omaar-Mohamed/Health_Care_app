@@ -15,8 +15,8 @@ import io.reactivex.rxjava3.core.Flowable;
 
 @Dao
 public interface FAvMealsDAO {
-    @Query("SELECT * FROM fav_meals where email = :email")
-    Flowable <List<MealDetailDTO.MealItem>> getFavMeals(String email);
+    @Query("SELECT * FROM fav_meals")
+    Flowable <List<MealDetailDTO.MealItem>> getFavMeals();
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertFavMeal(MealDetailDTO.MealItem meal);
