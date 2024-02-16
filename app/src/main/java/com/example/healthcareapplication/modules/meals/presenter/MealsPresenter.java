@@ -114,5 +114,9 @@ public class MealsPresenter  {
                 });
     }
 
+    public void insertFavMeal(MealDetailDTO.MealItem meal) {
+        appRepo.insertFavMeal(meal);
+    }
+
 
 }

@@ -1,22 +1,30 @@
 package com.example.healthcareapplication.model;
 
+import com.example.healthcareapplication.model.db.FavMealsDataSource;
+import com.example.healthcareapplication.model.dto.MealDetailDTO;
+import com.example.healthcareapplication.model.dto.MealListDto;
 import com.example.healthcareapplication.model.network.AppRemoteDataSourseImp;
 
+import java.util.List;
+
+import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Observable;
 
 public class AppRepo implements AppRepoOperations{
     AppRemoteDataSourseImp appRemoteDataSourseImp;
+    FavMealsDataSource favMealsDataSource;
 
     private static AppRepo instance;
 
-    public static AppRepo getInstance(AppRemoteDataSourseImp appRemoteDataSourseImp) {
+    public static AppRepo getInstance(AppRemoteDataSourseImp appRemoteDataSourseImp , FavMealsDataSource favMealsDataSource) {
         if (instance == null) {
-            instance = new AppRepo(appRemoteDataSourseImp);
+            instance = new AppRepo(appRemoteDataSourseImp , favMealsDataSource);
         }
         return instance;
     }
-    private AppRepo(AppRemoteDataSourseImp appRemoteDataSourseImp) {
+    private AppRepo(AppRemoteDataSourseImp appRemoteDataSourseImp , FavMealsDataSource favMealsDataSource) {
         this.appRemoteDataSourseImp = appRemoteDataSourseImp;
+        this.favMealsDataSource = favMealsDataSource;
     }
 
     @Override
@@ -48,6 +56,21 @@ public class AppRepo implements AppRepoOperations{
     @Override
     public Observable getMealById(String id) {
        return appRemoteDataSourseImp.getMealDetails(id);
+    }
+
+    @Override
+    public Flowable<List<MealDetailDTO.MealItem>> getFavMeals(String email) {
+        return favMealsDataSource.getAllFavMeals(email) ;
+    }
+
+    @Override
+    public void insertFavMeal(MealDetailDTO.MealItem meal) {
+            favMealsDataSource.insertFavMeal(meal);
+    }
+
+    @Override
+    public void deleteFavMeal(MealDetailDTO.MealItem meal) {
+        favMealsDataSource.deleteFavMeal(meal);
     }
 
 

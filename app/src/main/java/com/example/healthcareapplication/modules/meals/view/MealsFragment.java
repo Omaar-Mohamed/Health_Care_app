@@ -26,11 +26,13 @@ import android.widget.VideoView;
 import com.bumptech.glide.Glide;
 import com.example.healthcareapplication.R;
 import com.example.healthcareapplication.model.AppRepo;
+import com.example.healthcareapplication.model.db.FavMealsDataSource;
 import com.example.healthcareapplication.model.dto.MealDetailDTO;
 import com.example.healthcareapplication.model.dto.MealListDto;
 import com.example.healthcareapplication.model.network.AppRemoteDataSourseImp;
 import com.example.healthcareapplication.modules.meals.presenter.MealsPresenter;
 import com.example.healthcareapplication.shared.IngrediantAdapter;
+import com.google.firebase.auth.FirebaseAuth;
 
 import org.w3c.dom.Text;
 
@@ -67,7 +69,7 @@ TextView message;
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2); // 2 columns, adjust as needed
         recyclerView.setLayoutManager(gridLayoutManager);
 
-        mealsPresenter = new MealsPresenter(this, AppRepo.getInstance(AppRemoteDataSourseImp.getInstance()));
+        mealsPresenter = new MealsPresenter(this, AppRepo.getInstance(AppRemoteDataSourseImp.getInstance() , FavMealsDataSource.getInstance(getContext() , FirebaseAuth.getInstance().getCurrentUser().getEmail())));
         Bundle args = getArguments();
         if (args != null) {
             String type = args.getString("type");
@@ -115,7 +117,6 @@ TextView message;
 
 
     private void showMealDetailsPopup(MealDetailDTO.MealItem meal) {
-
         ArrayList <String>
         ingredientsList=new ArrayList<String>();
         ingredientsList.add(meal.getStrMeasure1());
@@ -187,15 +188,32 @@ TextView message;
         imageButtonFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Added to Favorites", Toast.LENGTH_SHORT).show();
+
 
                 // Toggle the image resource between whiteheart and redheart
-                int newImageResource = (imageButtonFavorite.getTag() == null || (int) imageButtonFavorite.getTag() == R.drawable.whiteheart)
-                        ? R.drawable.redheart
-                        : R.drawable.whiteheart;
+//                int newImageResource = (imageButtonFavorite.getTag() == null || (int) imageButtonFavorite.getTag() == R.drawable.whiteheart)
+//                        ? R.drawable.redheart
+//                        : R.drawable.whiteheart;
+//
+//                imageButtonFavorite.setBackgroundResource(newImageResource);
+//                imageButtonFavorite.setTag(newImageResource); // Upda
+                if (imageButtonFavorite.getTag() == null || (int) imageButtonFavorite.getTag() == R.drawable.whiteheart) {
+                    Toast.makeText(getContext(), "Added to Favorites", Toast.LENGTH_SHORT).show();
+                    if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                        FirebaseAuth auth = FirebaseAuth.getInstance();
+                        meal.setEmail(auth.getCurrentUser().getEmail());
+                        mealsPresenter.insertFavMeal(meal);
+                        imageButtonFavorite.setBackgroundResource(R.drawable.redheart);
+                        imageButtonFavorite.setTag(R.drawable.redheart);
+                    } else {
+                        Toast.makeText(getContext(), "Please login to add to favorites", Toast.LENGTH_SHORT).show();
+                    }
 
-                imageButtonFavorite.setBackgroundResource(newImageResource);
-                imageButtonFavorite.setTag(newImageResource); // Upda
+                } else {
+                    Toast.makeText(getContext(), "Removed from Favorites", Toast.LENGTH_SHORT).show();
+                    imageButtonFavorite.setBackgroundResource(R.drawable.whiteheart);
+                    imageButtonFavorite.setTag(R.drawable.whiteheart);
+                }
             }
         });
 
