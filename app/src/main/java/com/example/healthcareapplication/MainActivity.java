@@ -159,6 +159,31 @@ public class MainActivity extends AppCompatActivity {
                             } else if (item.getItemId() == R.id.menu_search) {
                                 // Handle settings
                                 Toast.makeText(MainActivity.this, "Settings clicked", Toast.LENGTH_SHORT).show();
+                                navController.navigate(R.id.searchFragment);
+                                // Show and enable the bottom navigation view
+                                bottomNavigationView.setVisibility(View.GONE);
+                                bottomNavigationView.setEnabled(false);
+
+                                // Show the Toolbar
+                                appToolbar.setVisibility(View.VISIBLE);
+                                appToolbar.setTitle("Search");
+                                appToolbar.setNavigationIcon(android.R.drawable.ic_menu_revert);
+                                appToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        navController.popBackStack();
+                                        appToolbar.setNavigationIcon(null);
+                                        if (mAuth.getCurrentUser() != null) {
+                                            // Show the Toolbar
+                                            String userEmail = mAuth.getCurrentUser().getEmail();
+                                            String[] parts = userEmail.split("@");
+                                            appToolbar.setTitle("Hello,"+parts[0]);
+                                        }
+                                    }
+                                });
+
+                                // Remove menu items
+                                appToolbar.getMenu().clear();
                                 return true;
                             }
                             return false;

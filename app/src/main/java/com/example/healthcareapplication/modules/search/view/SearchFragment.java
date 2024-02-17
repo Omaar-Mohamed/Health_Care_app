@@ -1,9 +1,9 @@
-package com.example.healthcareapplication.modules.meals.view;
+package com.example.healthcareapplication.modules.search.view;
 
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,111 +15,135 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
 import com.example.healthcareapplication.R;
 import com.example.healthcareapplication.model.AppRepo;
 import com.example.healthcareapplication.model.db.FavMealsDataSource;
 import com.example.healthcareapplication.model.dto.MealDetailDTO;
-import com.example.healthcareapplication.model.dto.MealListDto;
+import com.example.healthcareapplication.model.dto.SearchResult;
 import com.example.healthcareapplication.model.network.AppRemoteDataSourseImp;
-import com.example.healthcareapplication.modules.meals.presenter.MealsPresenter;
+import com.example.healthcareapplication.modules.search.presenter.SearchPresenter;
 import com.example.healthcareapplication.shared.IngrediantAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.ObservableEmitter;
+import io.reactivex.rxjava3.core.ObservableOnSubscribe;
 
-public class MealsFragment extends Fragment implements MealsIview {
-    MealsPresenter mealsPresenter;
-    RecyclerView recyclerView;
 
-TextView message;
-    public MealsFragment() {
+public class SearchFragment extends Fragment implements SearchIview , OnSearchClickListener {
+SearchPresenter searchPresenter;
+SearchView searchEditText;
+RecyclerView searchRecyclerView;
+    View view;
+    public SearchFragment() {
         // Required empty public constructor
     }
-
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_meals, container, false);
-        recyclerView = view.findViewById(R.id.recyclerViewMeals);
-        recyclerView.setHasFixedSize(true);
-
-        // Use GridLayoutManager instead of LinearLayoutManager
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2); // 2 columns, adjust as needed
-        recyclerView.setLayoutManager(gridLayoutManager);
-
-        mealsPresenter = new MealsPresenter(this, AppRepo.getInstance(AppRemoteDataSourseImp.getInstance() , FavMealsDataSource.getInstance(getContext() , FirebaseAuth.getInstance().getCurrentUser().getEmail())));
-        Bundle args = getArguments();
-        if (args != null) {
-            String type = args.getString("type");
-            String category = args.getString("category");
-            String area = args.getString("area");
-            String mealId = args.getString("mealId");
-
-            if (category != null) {
-                mealsPresenter.getMealsByCategory(type, category);
-            } else if (area != null) {
-                mealsPresenter.getMealsByArea(type, area);
-            }
-        }
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+         view = inflater.inflate(R.layout.fragment_search, container, false);
+        searchEditText = view.findViewById(R.id.editTextSearch);
+        searchRecyclerView = view.findViewById(R.id.recyclerViewSearchResults);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        layoutManager.setOrientation(RecyclerView.VERTICAL);
+        searchRecyclerView.setLayoutManager(layoutManager);
+        searchPresenter = new SearchPresenter(this,  AppRepo.getInstance(AppRemoteDataSourseImp.getInstance(), FavMealsDataSource.getInstance(getContext(), FirebaseAuth.getInstance().getCurrentUser().getEmail())) );
+        searchPresenter.loadData();
+        search();
         return view;
     }
 
-
-
-
-    @Override
-    public void ShowError(String error) {
-        Log.e("meals error", "ShowError: "+error );
-    }
-
-    @Override
-    public void showMeals(List<MealListDto.MealListItemDto> meals) {
-        Log.i("meals", "showMeals: "+meals);
-        MealsGridAdapter mealsGridAdapter = new MealsGridAdapter(getContext(), meals, new OnMealClickListener() {
+    public void search() {
+//        searchPresenter.getSearch("egg");
+        Observable<String> queryObservable = Observable.create(new ObservableOnSubscribe<String>() {
             @Override
-            public void onMealClick(MealListDto.MealListItemDto meal) {
-                Toast.makeText(getContext(), "Meal Clicked", Toast.LENGTH_SHORT).show();
-                mealsPresenter.getMealById(meal.getMealId());
+            public void subscribe(@NonNull ObservableEmitter<String> emitter) throws Throwable {
+                searchEditText.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit(String query) {
+
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onQueryTextChange(String newText) {
+                        emitter.onNext(newText);
+                        return false;
+                    }
+
+                });
             }
-        });
-        recyclerView.setAdapter(mealsGridAdapter);
-        mealsGridAdapter.notifyDataSetChanged();
+        }).debounce(200, TimeUnit.MILLISECONDS);
+        queryObservable.subscribe(s -> searchPresenter.getSearch(s));
+    }
+    @Override
+    public void showsearchResult(List<SearchResult> resultsList) {
+        SearchRecyclerAdapter adapter = new SearchRecyclerAdapter(getContext(),this ,resultsList);
+        searchRecyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 
     @Override
-    public void showMealDetail(List<MealDetailDTO.MealItem> meal) {
-        Log.i("mealDetail", "showMealDetail: "+meal);
-        showMealDetailsPopup(meal.get(0));
+    public void onSearchClick(SearchResult searchResult) {
+        Bundle bundle=new Bundle();
 
+        if(searchResult.getType().equals("area"))
+        {
+            bundle.putString("type","area");
+            bundle.putString("area", searchResult.getResult());
+            Log.i("checking search result", "onSearchClick: "+searchResult.getResult());
+            Navigation.findNavController(view).navigate(R.id.action_searchFragment_to_mealsFragment,bundle);
+
+        }
+        else if(searchResult.getType().equals("category"))
+        {
+            bundle.putString("type","category");
+            bundle.putString("category", searchResult.getResult());
+            Navigation.findNavController(view).navigate(R.id.action_searchFragment_to_mealsFragment,bundle);
+
+        }
+        else if (searchResult.getType().equals("ingredient")) {
+            bundle.putString("type","ingredient");
+            bundle.putString("ingredient", searchResult.getResult());
+            Navigation.findNavController(view).navigate(R.id.action_searchFragment_to_mealsFragment,bundle);
+        }
+        else if (searchResult.getType().equals("meal"))
+        {
+            bundle.putString("mealId", searchResult.getResult());
+//            showMealDetailsPopup(searchPresenter.getMeal(searchResult.getResult()));
+//            Navigation.findNavController(view).navigate(R.id.action_searchFragment_to_mealsFragment,bundle);
+        }
     }
-
 
     private void showMealDetailsPopup(MealDetailDTO.MealItem meal) {
-        ArrayList <String>
-        ingredientsList=new ArrayList<String>();
+        ArrayList<String>
+                ingredientsList=new ArrayList<String>();
         ingredientsList.add(meal.getStrMeasure1());
         ingredientsList.add(meal.getStrIngredient2());
         ingredientsList.add(meal.getStrIngredient3());
@@ -183,7 +207,7 @@ TextView message;
 
         // Create PopupWindow with calculated dimensions
         PopupWindow popupWindow = new PopupWindow(popupView, popupWidth, popupHeight, true);
-        popupWindow.showAtLocation(recyclerView, Gravity.CENTER, 0, 0);
+        popupWindow.showAtLocation(searchRecyclerView, Gravity.CENTER, 0, 0);
 
         // Set up button click listener
         imageButtonFavorite.setOnClickListener(new View.OnClickListener() {
@@ -203,7 +227,7 @@ TextView message;
                     if (FirebaseAuth.getInstance().getCurrentUser() != null) {
                         FirebaseAuth auth = FirebaseAuth.getInstance();
                         meal.setEmail(auth.getCurrentUser().getEmail());
-                        mealsPresenter.insertFavMeal(meal);
+                        searchPresenter.insertFavMeal(meal);
                         imageButtonFavorite.setBackgroundResource(R.drawable.redheart);
                         imageButtonFavorite.setTag(R.drawable.redheart);
                     } else {
@@ -260,7 +284,5 @@ TextView message;
                 "    iframe.style.width = '100%';" +
                 "}})();", null);
     }
-
-
 
 }

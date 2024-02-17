@@ -3,6 +3,7 @@ package com.example.healthcareapplication.model;
 import com.example.healthcareapplication.model.db.FavMealsDataSource;
 import com.example.healthcareapplication.model.dto.MealDetailDTO;
 import com.example.healthcareapplication.model.dto.MealListDto;
+import com.example.healthcareapplication.model.dto.SearchMealByNameResponse;
 import com.example.healthcareapplication.model.network.AppRemoteDataSourseImp;
 
 import java.util.List;
@@ -56,6 +57,16 @@ public class AppRepo implements AppRepoOperations{
     @Override
     public Observable getMealById(String id) {
        return appRemoteDataSourseImp.getMealDetails(id);
+    }
+
+    @Override
+    public Observable<SearchMealByNameResponse> getMealsByName(String name) {
+        return appRemoteDataSourseImp.getMealByName(name);
+    }
+
+    @Override
+    public Observable getIngredients() {
+        return appRemoteDataSourseImp.getIngrediants();
     }
 
     @Override

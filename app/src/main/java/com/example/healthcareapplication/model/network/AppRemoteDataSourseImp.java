@@ -234,4 +234,68 @@ return network.getMealsByCategory(category)
 
     }
 
+    public Observable getMealByName(String name) {
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+                .build();
+        Network network = retrofit.create(Network.class);
+        return network.getMealsByName(name)
+                .subscribeOn(Schedulers.io());
+//        network.getMealById(id).enqueue(new Callback<MealDetailDTO>() {
+//
+//            @Override
+//            public void onResponse(Call<MealDetailDTO> call, Response<MealDetailDTO> response) {
+//                if (response.isSuccessful()) {
+//                    mealDetails.addAll(response.body().getMeals());
+//                    callback.onGetMealByIdSuccess(mealDetails);
+//                } else {
+//                    callback.onGetMealByIdError("Unsuccessful response");
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<MealDetailDTO> call, Throwable t) {
+//                callback.onGetMealByIdError(t.getMessage());
+//            }
+//
+//        });
+
+    }
+
+    public Observable getIngrediants() {
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+                .build();
+        Network network = retrofit.create(Network.class);
+        return network.getIngredients()
+                .subscribeOn(Schedulers.io());
+//        network.getAreas().enqueue(new Callback<MealAreaList>() {
+//
+//            @Override
+//            public void onResponse(Call<MealAreaList> call, Response<MealAreaList> response) {
+//                if (response.isSuccessful()) {
+//                    areas.addAll(response.body().getMealAreas());
+//                    callback.onGetAreasSuccess(areas);
+//                } else {
+//                    callback.onGetAreasError("Unsuccessful response");
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<MealAreaList> call, Throwable t) {
+//                callback.onGetAreasError(t.getMessage());
+//            }
+//        });
+    }
+
 }

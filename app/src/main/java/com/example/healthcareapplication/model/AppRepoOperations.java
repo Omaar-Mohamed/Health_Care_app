@@ -21,6 +21,10 @@ public interface AppRepoOperations {
 
     Observable getMealById(String id);
 
+    Observable getMealsByName(String name);
+
+    Observable getIngredients();
+
     Flowable<List<MealDetailDTO.MealItem>> getFavMeals(String email);
     void insertFavMeal(MealDetailDTO.MealItem meal);
 

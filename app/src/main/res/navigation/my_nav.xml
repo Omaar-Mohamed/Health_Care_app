@@ -60,5 +60,17 @@
             android:id="@+id/action_mealsFragment_to_HomeFragment"
             app:destination="@id/HomeFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.example.healthcareapplication.modules.search.view.SearchFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_searchFragment_to_HomeFragment"
+            app:destination="@id/HomeFragment" />
+        <action
+            android:id="@+id/action_searchFragment_to_mealsFragment"
+            app:destination="@id/mealsFragment" />
+    </fragment>
 
 </navigation>

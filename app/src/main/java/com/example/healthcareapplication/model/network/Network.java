@@ -1,10 +1,12 @@
 package com.example.healthcareapplication.model.network;
 
+import com.example.healthcareapplication.model.dto.IngredientList;
 import com.example.healthcareapplication.model.dto.MealAreaList;
 import com.example.healthcareapplication.model.dto.MealCategoryList;
 import com.example.healthcareapplication.model.dto.MealDTO;
 import com.example.healthcareapplication.model.dto.MealDetailDTO;
 import com.example.healthcareapplication.model.dto.MealListDto;
+import com.example.healthcareapplication.model.dto.SearchMealByNameResponse;
 
 import io.reactivex.rxjava3.core.Observable;
 import retrofit2.Call;
@@ -30,5 +32,11 @@ public interface Network {
 
     @GET("lookup.php")
     Observable<MealDetailDTO> getMealById(@Query("i") String id);
+
+    @GET("search.php")
+    Observable<SearchMealByNameResponse> getMealsByName(@Query("s") String name);
+
+    @GET("list.php?i=list")
+    Observable<IngredientList> getIngredients();
 
 }
