@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- res/layout/grid_item_cardview.xml -->
 
-<!-- res/layout/grid_item_cardview.xml -->
-
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="200dp"
@@ -12,31 +10,31 @@
     app:cardCornerRadius="16dp"
     app:cardUseCompatPadding="true">
 
-<LinearLayout
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:orientation="vertical"
-android:background="#c5e1a5"
-android:gravity="center">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#c5e1a5"
+        android:gravity="center">
 
-<ImageView
-    android:id="@+id/imageViewFood"
-    android:layout_width="120dp"
-    android:layout_height="100dp"
-    android:scaleType="centerCrop"
-    android:src="@drawable/stack" />
+        <ImageView
+            android:id="@+id/imageViewFood"
+            android:layout_width="120dp"
+            android:layout_height="100dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/stack" />
 
-<TextView
-    android:id="@+id/textViewFoodCategory"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="16dp"
+        <TextView
+            android:id="@+id/textViewFoodCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Food Category with a long description that wraps "
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:textStyle="bold" />
 
-    android:text="Food Category"
-    android:textSize="16sp"
-    android:maxLines="2"
-    android:ellipsize="end"
-    android:textStyle="bold" />
-
-</LinearLayout>
-    </androidx.cardview.widget.CardView>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

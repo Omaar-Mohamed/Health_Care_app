@@ -1,0 +1,54 @@
+<!-- res/layout/popup_meal_type.xml -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@android:color/white"
+    android:padding="16dp">
+
+    <!-- Spinner for meal types -->
+    <Spinner
+        android:id="@+id/mealTypeSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:background="@android:drawable/btn_dropdown"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <!-- TextView to display selected date -->
+        <TextView
+            android:id="@+id/selectedDateTextView"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="0/0/0000"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"/>
+
+        <!-- ImageButton for the calendar -->
+        <ImageButton
+            android:id="@+id/CalenderimageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_my_calendar"
+            android:background="?android:attr/selectableItemBackground"/>
+
+    </LinearLayout>
+
+    <!-- Button for confirmation -->
+    <Button
+        android:id="@+id/confirmButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Confirm"
+        android:layout_marginTop="16dp"/>
+
+</LinearLayout>

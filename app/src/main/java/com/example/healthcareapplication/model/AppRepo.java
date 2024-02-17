@@ -1,9 +1,9 @@
 package com.example.healthcareapplication.model;
 
-import com.example.healthcareapplication.model.db.FavMealsDataSource;
+import com.example.healthcareapplication.model.db.AppLocalDataSource;
 import com.example.healthcareapplication.model.dto.MealDetailDTO;
-import com.example.healthcareapplication.model.dto.MealListDto;
 import com.example.healthcareapplication.model.dto.SearchMealByNameResponse;
+import com.example.healthcareapplication.model.dto.WeekPlan;
 import com.example.healthcareapplication.model.network.AppRemoteDataSourseImp;
 
 import java.util.List;
@@ -13,19 +13,19 @@ import io.reactivex.rxjava3.core.Observable;
 
 public class AppRepo implements AppRepoOperations{
     AppRemoteDataSourseImp appRemoteDataSourseImp;
-    FavMealsDataSource favMealsDataSource;
+    AppLocalDataSource appLocalDataSource;
 
     private static AppRepo instance;
 
-    public static AppRepo getInstance(AppRemoteDataSourseImp appRemoteDataSourseImp , FavMealsDataSource favMealsDataSource) {
+    public static AppRepo getInstance(AppRemoteDataSourseImp appRemoteDataSourseImp , AppLocalDataSource appLocalDataSource) {
         if (instance == null) {
-            instance = new AppRepo(appRemoteDataSourseImp , favMealsDataSource);
+            instance = new AppRepo(appRemoteDataSourseImp , appLocalDataSource);
         }
         return instance;
     }
-    private AppRepo(AppRemoteDataSourseImp appRemoteDataSourseImp , FavMealsDataSource favMealsDataSource) {
+    private AppRepo(AppRemoteDataSourseImp appRemoteDataSourseImp , AppLocalDataSource appLocalDataSource) {
         this.appRemoteDataSourseImp = appRemoteDataSourseImp;
-        this.favMealsDataSource = favMealsDataSource;
+        this.appLocalDataSource = appLocalDataSource;
     }
 
     @Override
@@ -71,17 +71,32 @@ public class AppRepo implements AppRepoOperations{
 
     @Override
     public Flowable<List<MealDetailDTO.MealItem>> getFavMeals(String email) {
-        return favMealsDataSource.getAllFavMeals(email) ;
+        return appLocalDataSource.getAllFavMeals(email) ;
     }
 
     @Override
     public void insertFavMeal(MealDetailDTO.MealItem meal) {
-            favMealsDataSource.insertFavMeal(meal);
+            appLocalDataSource.insertFavMeal(meal);
     }
 
     @Override
     public void deleteFavMeal(MealDetailDTO.MealItem meal) {
-        favMealsDataSource.deleteFavMeal(meal);
+        appLocalDataSource.deleteFavMeal(meal);
+    }
+
+    @Override
+    public Flowable<List<WeekPlan>> getPlan() {
+        return appLocalDataSource.getPlan();
+    }
+
+    @Override
+    public void insertPlan(WeekPlan weekPlan) {
+        appLocalDataSource.insertPlan(weekPlan);
+    }
+
+    @Override
+    public void deletePlan(WeekPlan weekPlan) {
+        appLocalDataSource.deletePlan(weekPlan);
     }
 
 

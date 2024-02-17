@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.example.healthcareapplication.model.AppRepo;
 import com.example.healthcareapplication.model.dto.MealDetailDTO;
+import com.example.healthcareapplication.model.dto.WeekPlan;
 import com.example.healthcareapplication.modules.Favourite.view.FavMealsIView;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -24,5 +25,9 @@ public class FavMealsPresenter {
 
     public void removeFavMeal(MealDetailDTO.MealItem meal) {
         appRepo.deleteFavMeal(meal);
+    }
+
+    public void addToPlan(WeekPlan weekPlan) {
+        appRepo.insertPlan(weekPlan);
     }
 }

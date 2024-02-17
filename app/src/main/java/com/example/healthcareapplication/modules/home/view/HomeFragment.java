@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,11 +25,10 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.healthcareapplication.R;
 import com.example.healthcareapplication.model.AppRepo;
-import com.example.healthcareapplication.model.db.FavMealsDataSource;
+import com.example.healthcareapplication.model.db.AppLocalDataSource;
 import com.example.healthcareapplication.model.dto.MealAreaList;
 import com.example.healthcareapplication.model.dto.MealCategoryList;
 import com.example.healthcareapplication.model.dto.MealDTO;
-import com.example.healthcareapplication.model.dto.MealDetailDTO;
 import com.example.healthcareapplication.model.network.AppRemoteDataSourseImp;
 import com.example.healthcareapplication.modules.home.presenter.HomePresenter;
 import com.example.healthcareapplication.shared.IngrediantAdapter;
@@ -100,7 +98,7 @@ public class HomeFragment extends Fragment implements HomeIview {
         LinearLayoutManager layoutManager1 = new LinearLayoutManager(getContext());
         layoutManager1.setOrientation(LinearLayoutManager.HORIZONTAL);
         countriesRecyclerView.setLayoutManager(layoutManager1);
-        homePresenter = new HomePresenter(this , AppRepo.getInstance(AppRemoteDataSourseImp.getInstance(), FavMealsDataSource.getInstance(getContext(),FirebaseAuth.getInstance().getCurrentUser().getEmail()))  );
+        homePresenter = new HomePresenter(this , AppRepo.getInstance(AppRemoteDataSourseImp.getInstance(), AppLocalDataSource.getInstance(getContext(),FirebaseAuth.getInstance().getCurrentUser().getEmail()))  );
 
         homePresenter.getCategories();
         homePresenter.getRandomMeal();

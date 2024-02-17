@@ -15,26 +15,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
 import com.example.healthcareapplication.R;
 import com.example.healthcareapplication.model.AppRepo;
-import com.example.healthcareapplication.model.db.FavMealsDataSource;
+import com.example.healthcareapplication.model.db.AppLocalDataSource;
 import com.example.healthcareapplication.model.dto.MealDetailDTO;
 import com.example.healthcareapplication.model.dto.MealListDto;
 import com.example.healthcareapplication.model.network.AppRemoteDataSourseImp;
 import com.example.healthcareapplication.modules.meals.presenter.MealsPresenter;
 import com.example.healthcareapplication.shared.IngrediantAdapter;
 import com.google.firebase.auth.FirebaseAuth;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,7 +65,7 @@ TextView message;
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2); // 2 columns, adjust as needed
         recyclerView.setLayoutManager(gridLayoutManager);
 
-        mealsPresenter = new MealsPresenter(this, AppRepo.getInstance(AppRemoteDataSourseImp.getInstance() , FavMealsDataSource.getInstance(getContext() , FirebaseAuth.getInstance().getCurrentUser().getEmail())));
+        mealsPresenter = new MealsPresenter(this, AppRepo.getInstance(AppRemoteDataSourseImp.getInstance() , AppLocalDataSource.getInstance(getContext() , FirebaseAuth.getInstance().getCurrentUser().getEmail())));
         Bundle args = getArguments();
         if (args != null) {
             String type = args.getString("type");

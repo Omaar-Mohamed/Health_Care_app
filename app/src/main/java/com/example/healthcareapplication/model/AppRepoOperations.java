@@ -3,6 +3,7 @@ package com.example.healthcareapplication.model;
 
 import com.example.healthcareapplication.model.dto.MealDetailDTO;
 import com.example.healthcareapplication.model.dto.MealListDto;
+import com.example.healthcareapplication.model.dto.WeekPlan;
 
 import java.util.List;
 
@@ -29,6 +30,10 @@ public interface AppRepoOperations {
     void insertFavMeal(MealDetailDTO.MealItem meal);
 
     void deleteFavMeal(MealDetailDTO.MealItem meal);
+
+    Flowable<List<WeekPlan>> getPlan();
+    void insertPlan(WeekPlan weekPlan);
+    void deletePlan(WeekPlan weekPlan);
 
 
 

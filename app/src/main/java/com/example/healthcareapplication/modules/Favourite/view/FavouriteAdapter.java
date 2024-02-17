@@ -57,7 +57,7 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.Favo
         holder.addPlan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                listener.onFavMealAddPlan(meal);
+                listener.onFavMealClick(meal);
             }
         });
 
