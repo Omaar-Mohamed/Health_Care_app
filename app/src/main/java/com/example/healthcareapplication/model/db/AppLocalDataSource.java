@@ -16,16 +16,16 @@ public class AppLocalDataSource implements DataBaseOperation{
     private WeekPlanDAO weekPlanDAO;
     private Flowable<List<MealDetailDTO.MealItem>> favMeals;
 
-    private AppLocalDataSource(Context context , String email) {
+    private AppLocalDataSource(Context context ) {
         AppDatabase appDatabase = AppDatabase.getInstance(context.getApplicationContext());
         fAvMealsDAO = appDatabase.FAvMealsDAO();
         weekPlanDAO = appDatabase.weekPlanDAO();
         favMeals = fAvMealsDAO.getFavMeals();
     }
 
-    public static AppLocalDataSource getInstance(Context context , String email) {
+    public static AppLocalDataSource getInstance(Context context ) {
         if (appLocalDataSource == null) {
-            appLocalDataSource = new AppLocalDataSource(context , email);
+            appLocalDataSource = new AppLocalDataSource(context );
         }
         return appLocalDataSource;
     }

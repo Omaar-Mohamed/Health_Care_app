@@ -31,6 +31,7 @@ import com.example.healthcareapplication.model.dto.MealCategoryList;
 import com.example.healthcareapplication.model.dto.MealDTO;
 import com.example.healthcareapplication.model.network.AppRemoteDataSourseImp;
 import com.example.healthcareapplication.modules.home.presenter.HomePresenter;
+import com.example.healthcareapplication.shared.DialogUtils;
 import com.example.healthcareapplication.shared.IngrediantAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -98,7 +99,7 @@ public class HomeFragment extends Fragment implements HomeIview {
         LinearLayoutManager layoutManager1 = new LinearLayoutManager(getContext());
         layoutManager1.setOrientation(LinearLayoutManager.HORIZONTAL);
         countriesRecyclerView.setLayoutManager(layoutManager1);
-        homePresenter = new HomePresenter(this , AppRepo.getInstance(AppRemoteDataSourseImp.getInstance(), AppLocalDataSource.getInstance(getContext(),FirebaseAuth.getInstance().getCurrentUser().getEmail()))  );
+        homePresenter = new HomePresenter(this , AppRepo.getInstance(AppRemoteDataSourseImp.getInstance(), AppLocalDataSource.getInstance(getContext()))  );
 
         homePresenter.getCategories();
         homePresenter.getRandomMeal();
@@ -115,10 +116,28 @@ public class HomeFragment extends Fragment implements HomeIview {
             @Override
             public void onCategoryClick(MealCategoryList.MealCategory mealCategory) {
 //                HomeFragmentDirections.ActionHomeFragmentToCategoryFragment action = HomeFragmentDirections.actionHomeFragmentToCategoryFragment(mealCategory);
-                Bundle bundle = new Bundle();
-                bundle.putString("category", mealCategory.getStrCategory());
-                bundle.putString("type", "c");
-                NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_HomeFragment_to_mealsFragment, bundle);
+               if(FirebaseAuth.getInstance().getCurrentUser() != null) {
+                   Bundle bundle = new Bundle();
+                   bundle.putString("category", mealCategory.getStrCategory());
+                   bundle.putString("type", "c");
+                   NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_HomeFragment_to_mealsFragment, bundle);
+
+               } else{
+                   DialogUtils.showYesNoDialog(getContext(), "Confirmation", "Please sign in. Do you want to proceed?", new DialogUtils.OnYesClickListener() {
+                       @Override
+                       public void onYesClicked() {
+                           // Handle Yes button click
+                           // Add your sign-in logic here
+                            NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_HomeFragment_to_login);
+                       }
+                   }, new DialogUtils.OnNoClickListener() {
+                       @Override
+                       public void onNoClicked() {
+                           // Handle No button click
+                           // Add your logic for not signing in
+                       }
+                   });
+               }
 
             }
 
@@ -162,13 +181,29 @@ public class HomeFragment extends Fragment implements HomeIview {
 
             @Override
             public void onAreaClick(MealAreaList.MealArea mealCategory) {
-                Toast.makeText(getContext(), mealCategory.getArea(), Toast.LENGTH_SHORT).show();
-                Bundle bundle = new Bundle();
-                bundle.putString("area", mealCategory.getArea());
-                Log.i("getArea", "onAreaClick: "+mealCategory.getArea());
+                if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                    Toast.makeText(getContext(), mealCategory.getArea(), Toast.LENGTH_SHORT).show();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("area", mealCategory.getArea());
+                    Log.i("getArea", "onAreaClick: " + mealCategory.getArea());
 
-                NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_HomeFragment_to_mealsFragment, bundle);
-
+                    NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_HomeFragment_to_mealsFragment, bundle);
+                } else {
+                    DialogUtils.showYesNoDialog(getContext(), "Confirmation", "Please sign in. Do you want to proceed?", new DialogUtils.OnYesClickListener() {
+                        @Override
+                        public void onYesClicked() {
+                            // Handle Yes button click
+                            // Add your sign-in logic here
+                            NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_HomeFragment_to_login);
+                        }
+                    }, new DialogUtils.OnNoClickListener() {
+                        @Override
+                        public void onNoClicked() {
+                            // Handle No button click
+                            // Add your logic for not signing in
+                        }
+                    });
+                }
             }
         });
         countriesRecyclerView.setAdapter(countriesAdapter);
@@ -256,6 +291,11 @@ public class HomeFragment extends Fragment implements HomeIview {
         popupWindow.showAtLocation(categoriesRecyclerView, Gravity.CENTER, 0, 0);
 
         // Set up button click listener
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            imageButtonFavorite.setVisibility(View.VISIBLE);
+        } else {
+            imageButtonFavorite.setVisibility(View.GONE);
+        }
         imageButtonFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -68,7 +68,7 @@ TextView message;
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2); // 2 columns, adjust as needed
         recyclerView.setLayoutManager(gridLayoutManager);
 
-        mealsPresenter = new MealsPresenter(this, AppRepo.getInstance(AppRemoteDataSourseImp.getInstance() , AppLocalDataSource.getInstance(getContext() , FirebaseAuth.getInstance().getCurrentUser().getEmail())));
+        mealsPresenter = new MealsPresenter(this, AppRepo.getInstance(AppRemoteDataSourseImp.getInstance() , AppLocalDataSource.getInstance(getContext() )));
         Bundle args = getArguments();
         if (args != null) {
             String type = args.getString("type");

@@ -60,8 +60,7 @@ Date date;
         View view = inflater.inflate(R.layout.fragment_plan, container, false);
         recyclerView = view.findViewById(R.id.weekPlanRecyclerView);
         presenter = new PlanPresenter(this, AppRepo.getInstance(AppRemoteDataSourseImp.getInstance(),
-                AppLocalDataSource.getInstance(getContext() ,
-                        FirebaseAuth.getInstance().getCurrentUser().getEmail())));
+                AppLocalDataSource.getInstance(getContext())));
          recyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);

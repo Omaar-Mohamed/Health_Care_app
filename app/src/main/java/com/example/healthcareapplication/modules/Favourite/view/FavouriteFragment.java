@@ -69,8 +69,7 @@ String selectedType;
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_favourite, container, false);
     favMealsPresenter = new FavMealsPresenter(this , AppRepo.getInstance(AppRemoteDataSourseImp.getInstance(),
-                    AppLocalDataSource.getInstance(getContext() ,
-                    FirebaseAuth.getInstance().getCurrentUser().getEmail())));
+                    AppLocalDataSource.getInstance(getContext() )));
 
     recyclerView = view.findViewById(R.id.favRV);
     recyclerView.setHasFixedSize(true);

@@ -72,7 +72,7 @@ RecyclerView searchRecyclerView;
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         searchRecyclerView.setLayoutManager(layoutManager);
-        searchPresenter = new SearchPresenter(this,  AppRepo.getInstance(AppRemoteDataSourseImp.getInstance(), AppLocalDataSource.getInstance(getContext(), FirebaseAuth.getInstance().getCurrentUser().getEmail())) );
+        searchPresenter = new SearchPresenter(this,  AppRepo.getInstance(AppRemoteDataSourseImp.getInstance(), AppLocalDataSource.getInstance(getContext())) );
         searchPresenter.loadData();
         search();
         return view;

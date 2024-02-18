@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.Toast;
 import android.window.OnBackInvokedDispatcher;
 
+import com.example.healthcareapplication.shared.DialogUtils;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -74,14 +75,40 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 if (item.getItemId() == R.id.navigation_home) {
                     // Navigate to HomeFragment
-                    navController.navigate(R.id.HomeFragment);
+                    if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+                        // Show the Toolbar
+
+
+                    }else {
+                        navController.navigate(R.id.HomeFragment);
+
+                    }
                     return true;
                 } else if (item.getItemId() == R.id.navigation_favourite) {
                     // Check if the current destination is not Login or Signup fragment
                     if (navController.getCurrentDestination().getId() != R.id.login &&
                             navController.getCurrentDestination().getId() != R.id.signupFragment) {
                         // Navigate to FavouriteFragment
-                        navController.navigate(R.id.FavouriteFragment);
+                       if(FirebaseAuth.getInstance().getCurrentUser() != null){
+                           navController.navigate(R.id.FavouriteFragment);
+                       }else{
+                           DialogUtils.showYesNoDialog(MainActivity.this, "Confirmation", "Please sign in. Do you want to proceed?", new DialogUtils.OnYesClickListener() {
+                               @Override
+                               public void onYesClicked() {
+                                      // Handle Yes button click
+                                      // Add your logic for signing in
+                                      navController.navigate(R.id.login);
+                               }
+                           }, new DialogUtils.OnNoClickListener() {
+                               @Override
+                               public void onNoClicked() {
+                                   // Handle No button click
+                                   // Add your logic for not signing in
+
+                               }
+                           });
+                       }
+
                     }
                     return true;
                 }else if (item.getItemId() == R.id.navigation_plan) {
@@ -89,7 +116,26 @@ public class MainActivity extends AppCompatActivity {
                     if (navController.getCurrentDestination().getId() != R.id.login &&
                             navController.getCurrentDestination().getId() != R.id.signupFragment) {
                         // Navigate to PlanFragment
-                        navController.navigate(R.id.planFragment);
+
+                        if(FirebaseAuth.getInstance().getCurrentUser() != null){
+                            navController.navigate(R.id.planFragment);
+                        }else{
+                            DialogUtils.showYesNoDialog(MainActivity.this, "Confirmation", "Please sign in. Do you want to proceed?", new DialogUtils.OnYesClickListener() {
+                                @Override
+                                public void onYesClicked() {
+                                    // Handle Yes button click
+                                    // Add your logic for signing in
+                                    navController.navigate(R.id.login);
+                                }
+                            }, new DialogUtils.OnNoClickListener() {
+                                @Override
+                                public void onNoClicked() {
+                                    // Handle No button click
+                                    // Add your logic for not signing in
+
+                                }
+                            });
+                        }
                     }
                     return true;
                 }    // Add conditions for other menu items if needed
@@ -137,7 +183,14 @@ public class MainActivity extends AppCompatActivity {
 
                     // Remove menu items
                     appToolbar.getMenu().clear();
-                } else {
+                }  else if (FirebaseAuth.getInstance().getCurrentUser() == null){
+                    appToolbar.setVisibility(View.VISIBLE);
+                    appToolbar.setTitle("Hello, Guest");
+                    appToolbar.setNavigationIcon(null);
+                    appToolbar.getMenu().clear();
+                    bottomNavigationView.setVisibility(View.VISIBLE);
+                }
+                else {
                     appToolbar.getMenu().clear();
 
                     // Show and enable the bottom navigation view

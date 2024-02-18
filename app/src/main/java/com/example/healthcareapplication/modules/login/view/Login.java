@@ -42,7 +42,7 @@ public class Login extends Fragment {
     MainActivity appActivity;
 FirebaseAuth mAuth;
 
-
+Button guestbtn;
 private ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
     @Override
     public void onActivityResult(ActivityResult result) {
@@ -115,6 +115,14 @@ private ActivityResultLauncher<Intent> activityResultLauncher = registerForActiv
         TextView tvNextToSignUp = rootView.findViewById(R.id.tvNextToSignUp);
         Button btnLogin = rootView.findViewById(R.id.btnLogin);
         ImageView googleImage = rootView.findViewById(R.id.imageViewGoogle);
+
+        guestbtn = rootView.findViewById(R.id.myButton);
+        guestbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavHostFragment.findNavController(Login.this).navigate(R.id.action_login_to_homeFragment);
+            }
+        });
         BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottom_nav);
 //        bottomNavigationView.setVisibility(View.GONE);
 
