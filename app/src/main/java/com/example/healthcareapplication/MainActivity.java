@@ -264,6 +264,8 @@ public class MainActivity extends AppCompatActivity {
                                 appToolbar.setNavigationOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
+                                        bottomNavigationView.setVisibility(View.GONE);
+                                        bottomNavigationView.setEnabled(false);
                                         navController.popBackStack();
                                         appToolbar.setNavigationIcon(null);
                                         if (mAuth.getCurrentUser() != null) {
