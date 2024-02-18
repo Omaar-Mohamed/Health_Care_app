@@ -83,17 +83,17 @@ String selectedType;
         return view;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        favMealsPresenter.getFavMeals();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        favMealsPresenter.getFavMeals();
-    }
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        favMealsPresenter.getFavMeals();
+//    }
+//
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//        favMealsPresenter.getFavMeals();
+//    }
 
     @Override
     public void showFavMeals(Flowable<List<MealDetailDTO.MealItem>> meals) {

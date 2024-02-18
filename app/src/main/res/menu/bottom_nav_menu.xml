@@ -9,4 +9,8 @@
         android:id="@+id/navigation_favourite"
         android:title="Favourites"
         android:icon="@drawable/favorite_icon" />
+    <item
+        android:id="@+id/navigation_plan"
+        android:title="Plan"
+        android:icon="@drawable/noun_plan_6594605" />
 </menu>

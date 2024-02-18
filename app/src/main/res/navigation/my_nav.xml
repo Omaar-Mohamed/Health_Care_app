@@ -72,5 +72,10 @@
             android:id="@+id/action_searchFragment_to_mealsFragment"
             app:destination="@id/mealsFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/planFragment"
+        android:name="com.example.healthcareapplication.modules.plan.view.PlanFragment"
+        android:label="fragment_plan"
+        tools:layout="@layout/fragment_plan" />
 
 </navigation>

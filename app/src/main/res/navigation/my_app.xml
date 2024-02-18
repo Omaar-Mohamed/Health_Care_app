@@ -15,4 +15,9 @@
         android:name="com.example.healthcareapplication.modules.Favourite.view.FavouriteFragment"
         android:label="fragment_favourite"
         tools:layout="@layout/fragment_favourite" />
+    <fragment
+        android:id="@+id/planFragment2"
+        android:name="com.example.healthcareapplication.modules.plan.view.PlanFragment"
+        android:label="fragment_plan"
+        tools:layout="@layout/fragment_plan" />
 </navigation>

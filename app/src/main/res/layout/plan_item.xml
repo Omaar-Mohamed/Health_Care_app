@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- res/layout/card_week_plan_item.xml -->
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:elevation="4dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <!-- Meal Image -->
+        <ImageView
+            android:id="@+id/imageViewMeal"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/stack" />
+
+        <!-- Meal Name -->
+        <TextView
+            android:id="@+id/textViewMealName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/imageViewMeal"
+            android:layout_marginStart="16dp"
+            android:text="Meal Name"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <!-- Meal Type -->
+        <TextView
+            android:id="@+id/textViewMealType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textViewMealName"
+            android:layout_marginTop="4dp"
+            android:layout_toEndOf="@id/imageViewMeal"
+            android:layout_marginStart="16dp"
+            android:text="Meal Type"
+            android:textSize="16sp" />
+
+        <!-- Meal Date -->
+        <TextView
+            android:id="@+id/textViewMealDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textViewMealType"
+            android:layout_marginTop="4dp"
+            android:layout_toEndOf="@id/imageViewMeal"
+            android:layout_marginStart="16dp"
+            android:text="Meal Date"
+            android:textSize="14sp" />
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

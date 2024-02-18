@@ -53,8 +53,15 @@ public class MainActivity extends AppCompatActivity {
                         navController.navigate(R.id.FavouriteFragment);
                     }
                     return true;
-                }
-                // Add conditions for other menu items if needed
+                }else if (item.getItemId() == R.id.navigation_plan) {
+                    // Check if the current destination is not Login or Signup fragment
+                    if (navController.getCurrentDestination().getId() != R.id.login &&
+                            navController.getCurrentDestination().getId() != R.id.signupFragment) {
+                        // Navigate to PlanFragment
+                        navController.navigate(R.id.planFragment);
+                    }
+                    return true;
+                }    // Add conditions for other menu items if needed
                 return false;
             }
         });
