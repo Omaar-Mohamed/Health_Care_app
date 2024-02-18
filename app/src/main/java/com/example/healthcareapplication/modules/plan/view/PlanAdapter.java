@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -46,13 +47,14 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.PlanViewHolder
         holder.mealType.setText(plan.getType());
         holder.mealDate.setText(plan.getDate().toString());
         Glide.with(context).load(plan.getStrMealThumb()).into(holder.mealImage);
-       holder.itemView.setOnDragListener(new View.OnDragListener() {
-           @Override
-           public boolean onDrag(View view, DragEvent dragEvent) {
-               return false;
-           }
-
-         });
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                listener.onPlanClick(plan);
+                Toast.makeText(context, "Meal removed from plan", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
        }
 
 

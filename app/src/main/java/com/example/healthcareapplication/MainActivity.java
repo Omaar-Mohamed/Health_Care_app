@@ -1,5 +1,6 @@
 package com.example.healthcareapplication;
 
+import androidx.activity.OnBackPressedDispatcher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +15,7 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
+import android.window.OnBackInvokedDispatcher;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -29,12 +31,41 @@ import java.util.Objects;
 public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
     Toolbar appToolbar;
+    NavController navController;
+
+//    @Override
+//    public void onBackPressed() {
+//        // Handle back button press
+//        if (navController != null && navController.getCurrentDestination() != null) {
+//            int currentDestinationId = navController.getCurrentDestination().getId();
+//            if (currentDestinationId == R.id.HomeFragment || currentDestinationId == R.id.FavouriteFragment || currentDestinationId == R.id.planFragment) {
+//                // If the current fragment is HomeFragment, FavouriteFragment, or PlanFragment,
+//                // navigate up (equivalent to pressing the back button)
+//                if (!navController.navigateUp()) {
+//                    // If navigateUp returns false, there are no more destinations on the back stack.
+//                    // Perform the default back button behavior
+//                    super.onBackPressed();
+//                }
+//            } else {
+//                // If the current fragment is not HomeFragment, FavouriteFragment, or PlanFragment,
+//                // perform the default back button behavior
+//                super.onBackPressed();
+//            }
+//        } else {
+//            // If the NavController is null, perform the default back button behavior
+//            super.onBackPressed();
+//        }
+//    }
+//
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        NavController navController = Navigation.findNavController(this, R.id.fragmentContainerView);
+         navController = Navigation.findNavController(this, R.id.fragmentContainerView);
         bottomNavigationView = findViewById(R.id.bottom_nav);
         appToolbar = findViewById(R.id.app_toolbar);
 
@@ -64,7 +95,9 @@ public class MainActivity extends AppCompatActivity {
                 }    // Add conditions for other menu items if needed
                 return false;
             }
+
         });
+
 
         navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
             @Override

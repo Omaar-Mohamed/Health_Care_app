@@ -1,6 +1,7 @@
 package com.example.healthcareapplication.modules.plan.presenter;
 
 import com.example.healthcareapplication.model.AppRepo;
+import com.example.healthcareapplication.model.dto.WeekPlan;
 import com.example.healthcareapplication.modules.plan.view.PlanIview;
 
 public class PlanPresenter {
@@ -12,6 +13,10 @@ public class PlanPresenter {
     }
     public void getPlan() {
         planIview.showPlan(appRepo.getPlan());
+    }
+
+    public void deletePlan(WeekPlan weekPlan) {
+        appRepo.deletePlan(weekPlan);
     }
 
 }

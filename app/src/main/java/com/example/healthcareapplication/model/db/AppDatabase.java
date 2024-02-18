@@ -16,7 +16,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-@Database(entities = {MealDetailDTO.MealItem.class , WeekPlan.class}, version =4 )
+@Database(entities = {MealDetailDTO.MealItem.class , WeekPlan.class}, version =5 )
 @TypeConverters({SqlDateConverter.class})
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase instance = null;

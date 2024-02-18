@@ -37,6 +37,9 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
 
 public class MealsFragment extends Fragment implements MealsIview {
     MealsPresenter mealsPresenter;
@@ -180,39 +183,55 @@ TextView message;
         // Create PopupWindow with calculated dimensions
         PopupWindow popupWindow = new PopupWindow(popupView, popupWidth, popupHeight, true);
         popupWindow.showAtLocation(recyclerView, Gravity.CENTER, 0, 0);
+        imageButtonFavorite.setBackground(null);
 
         // Set up button click listener
+        if (meal!=null) {
+            mealsPresenter.checkMealExistInFav(meal)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(isExist -> {
+                        if (isExist) {
+                            imageButtonFavorite.setBackgroundResource(R.drawable.redheart);
+                            imageButtonFavorite.setTag(R.drawable.redheart);
+                        } else {
+                            imageButtonFavorite.setBackgroundResource(R.drawable.whiteheart);
+                            imageButtonFavorite.setTag(R.drawable.whiteheart);
+                        }
+                    });
+        }
         imageButtonFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-                // Toggle the image resource between whiteheart and redheart
-//                int newImageResource = (imageButtonFavorite.getTag() == null || (int) imageButtonFavorite.getTag() == R.drawable.whiteheart)
-//                        ? R.drawable.redheart
-//                        : R.drawable.whiteheart;
-//
-//                imageButtonFavorite.setBackgroundResource(newImageResource);
-//                imageButtonFavorite.setTag(newImageResource); // Upda
-                if (imageButtonFavorite.getTag() == null || (int) imageButtonFavorite.getTag() == R.drawable.whiteheart) {
-                    Toast.makeText(getContext(), "Added to Favorites", Toast.LENGTH_SHORT).show();
-                    if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-                        FirebaseAuth auth = FirebaseAuth.getInstance();
-                        meal.setEmail(auth.getCurrentUser().getEmail());
-                        mealsPresenter.insertFavMeal(meal);
-                        imageButtonFavorite.setBackgroundResource(R.drawable.redheart);
-                        imageButtonFavorite.setTag(R.drawable.redheart);
-                    } else {
-                        Toast.makeText(getContext(), "Please login to add to favorites", Toast.LENGTH_SHORT).show();
-                    }
-
-                } else {
-                    Toast.makeText(getContext(), "Removed from Favorites", Toast.LENGTH_SHORT).show();
-                    imageButtonFavorite.setBackgroundResource(R.drawable.whiteheart);
-                    imageButtonFavorite.setTag(R.drawable.whiteheart);
+                if (meal != null) {
+                    mealsPresenter.checkMealExistInFav(meal)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(isExist -> {
+                                if (isExist) {
+                                    // Meal exists in favorites, remove it
+                                    Toast.makeText(getContext(), "Removed from Favorites", Toast.LENGTH_SHORT).show();
+                                    mealsPresenter.deleteFavMeal(meal);
+                                    imageButtonFavorite.setBackgroundResource(R.drawable.whiteheart);
+                                    imageButtonFavorite.setTag(R.drawable.whiteheart);
+                                } else {
+                                    // Meal doesn't exist in favorites, add it
+                                    Toast.makeText(getContext(), "Added to Favorites", Toast.LENGTH_SHORT).show();
+                                    if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                                        FirebaseAuth auth = FirebaseAuth.getInstance();
+                                        meal.setEmail(auth.getCurrentUser().getEmail());
+                                        mealsPresenter.insertFavMeal(meal);
+                                        imageButtonFavorite.setBackgroundResource(R.drawable.redheart);
+                                        imageButtonFavorite.setTag(R.drawable.redheart);
+                                    } else {
+                                        Toast.makeText(getContext(), "Please login to add to favorites", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
                 }
             }
         });
+
 
         Log.d("TAG", "setMealVideo: width " +webView.getX());
         String videoUrl = convertToEmbeddedUrl(meal.getStrYoutube()); // Replace VIDEO_ID with the actual video ID or embed URL

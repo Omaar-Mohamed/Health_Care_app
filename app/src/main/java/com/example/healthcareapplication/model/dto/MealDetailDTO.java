@@ -17,12 +17,12 @@ public class MealDetailDTO {
         return meals;
     }
 
-   @Entity(tableName = "fav_meals")
+   @Entity(tableName = "fav_meals" , primaryKeys = {"idMeal","email"})
     public static class MealItem {
-        @PrimaryKey
         @NonNull
         @SerializedName("idMeal")
         private String idMeal;
+       @NonNull
         private String email;
         @SerializedName("strMeal")
         private String strMeal;
