@@ -10,6 +10,9 @@ import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.Navigator;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -59,7 +62,11 @@ public class MainActivity extends AppCompatActivity {
 //    }
 //
 
-
+    public boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
 
 
     @Override
@@ -70,6 +77,17 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.bottom_nav);
         appToolbar = findViewById(R.id.app_toolbar);
 
+        if (!isNetworkAvailable(this)) {
+            // Network is not available
+            // Show only Favourite and Plan in the bottom navigation
+            bottomNavigationView.getMenu().findItem(R.id.navigation_home).setVisible(false);
+
+            // Hide menu icons in the toolbar and invalidate the options menu
+            appToolbar.getMenu().clear();
+
+            // Navigate to FavouriteFragment
+            navController.navigate(R.id.FavouriteFragment);
+        }
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -205,6 +223,12 @@ public class MainActivity extends AppCompatActivity {
 
                     // Show the Toolbar
                     getMenuInflater().inflate(R.menu.home_toolbar_menu, appToolbar.getMenu());
+
+                    if (!isNetworkAvailable(MainActivity.this)) {
+                        // Network is not available
+                        // Show only Favourite and Plan in the bottom navigation
+                        appToolbar.getMenu().clear();
+                    }
                     appToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
