@@ -18,6 +18,7 @@ import android.webkit.WebViewClient;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,6 +46,7 @@ public class MealsFragment extends Fragment implements MealsIview {
     MealsPresenter mealsPresenter;
     RecyclerView recyclerView;
 
+    ProgressBar progressBar;
 TextView message;
     public MealsFragment() {
         // Required empty public constructor
@@ -62,6 +64,8 @@ TextView message;
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_meals, container, false);
         recyclerView = view.findViewById(R.id.recyclerViewMeals);
+        progressBar = view.findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.VISIBLE);
         recyclerView.setHasFixedSize(true);
 
         // Use GridLayoutManager instead of LinearLayoutManager
@@ -106,6 +110,7 @@ TextView message;
         });
         recyclerView.setAdapter(mealsGridAdapter);
         mealsGridAdapter.notifyDataSetChanged();
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override

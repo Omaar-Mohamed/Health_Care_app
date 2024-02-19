@@ -19,6 +19,7 @@ import android.webkit.WebViewClient;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,6 +57,7 @@ public class HomeFragment extends Fragment implements HomeIview {
     CardView cardView;
 
     MealDTO.Meal meal;
+ProgressBar progressBar;
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -82,6 +84,9 @@ public class HomeFragment extends Fragment implements HomeIview {
         randomMealName = view.findViewById(R.id.textViewMealName);
         randomMealImage = view.findViewById(R.id.imageViewMeal);
         cardView = view.findViewById(R.id.cardDailyInspiration);
+        progressBar = view.findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.VISIBLE);
+        cardView.setVisibility(View.GONE);
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -149,6 +154,8 @@ public class HomeFragment extends Fragment implements HomeIview {
         categoriesRecyclerView.setAdapter(categoriesAdapter);
         categoriesAdapter.notifyDataSetChanged();
 
+        progressBar.setVisibility(View.GONE);
+
     }
 
     @Override
@@ -163,6 +170,9 @@ public class HomeFragment extends Fragment implements HomeIview {
         randomMealName.setText(meal.get(0).getStrMeal());
         Glide.with(getContext()).load(meal.get(0).getStrMealThumb()).into(randomMealImage);
         this.meal = meal.get(0);
+        progressBar.setVisibility(View.GONE);
+        cardView.setVisibility(View.VISIBLE);
+
     }
 
     @Override
@@ -208,6 +218,8 @@ public class HomeFragment extends Fragment implements HomeIview {
         });
         countriesRecyclerView.setAdapter(countriesAdapter);
         countriesAdapter.notifyDataSetChanged();
+        progressBar.setVisibility(View.GONE);
+
 
     }
 

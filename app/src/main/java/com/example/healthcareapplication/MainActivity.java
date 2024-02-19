@@ -86,7 +86,12 @@ public class MainActivity extends AppCompatActivity {
             appToolbar.getMenu().clear();
 
             // Navigate to FavouriteFragment
-            navController.navigate(R.id.FavouriteFragment);
+            if (FirebaseAuth.getInstance().getCurrentUser() != null)
+            {
+                navController.navigate(R.id.FavouriteFragment);
+            }else {
+                navController.navigate(R.id.login);
+            }
         }
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
